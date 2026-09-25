@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
 
     stages {
@@ -16,16 +17,26 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Maven Build and Test') {
             steps {
-                sh 'docker build -t pink-tag-system .'
+                dir('maven-app') {
+                    sh 'mvn clean test'
+                }
             }
         }
 
-        stage('Docker Build Successful') {
+        stage('Check Docker') {
             steps {
-                echo 'Pink Tag System Docker image built successfully!'
+                sh '/usr/local/bin/docker --version'
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                sh '/usr/local/bin/docker build -t pink-tag-system .'
+            }
+        }
+
     }
+
 }

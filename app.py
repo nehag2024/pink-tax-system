@@ -1,32 +1,39 @@
-def detect_unfair_price(product1, product2, price1, price2):
-    if price1 <= 0 or price2 <= 0:
-        print("Invalid price entered.")
-        return
+from flask import Flask, render_template, request
 
-    difference = price2 - price1
-    percentage = (difference / price1) * 100
+app = Flask(__name__)
 
-    print("\n===== PINK TAG SYSTEM =====")
-    print(f"Product 1: {product1}")
-    print(f"Price: ₹{price1:.2f}")
 
-    print(f"\nProduct 2: {product2}")
-    print(f"Price: ₹{price2:.2f}")
+@app.route("/", methods=["GET", "POST"])
+def home():
+    result = None
 
-    print(f"\nPrice Difference: ₹{difference:.2f}")
-    print(f"Percentage Difference: {percentage:.2f}%")
+    if request.method == "POST":
+        product1 = request.form["product1"]
+        price1 = float(request.form["price1"])
 
-    if percentage > 10:
-        print("\n⚠️ Potential Unfair Pricing Detected!")
-    else:
-        print("\n✅ No Significant Unfair Pricing Detected.")
+        product2 = request.form["product2"]
+        price2 = float(request.form["price2"])
+
+        difference = price2 - price1
+        percentage = (difference / price1) * 100
+
+        if percentage > 10:
+            message = "⚠️ Potential Unfair Pricing Detected!"
+        else:
+            message = "✅ No Significant Unfair Pricing Detected."
+
+        result = {
+            "product1": product1,
+            "price1": price1,
+            "product2": product2,
+            "price2": price2,
+            "difference": difference,
+            "percentage": percentage,
+            "message": message
+        }
+
+    return render_template("index.html", result=result)
 
 
 if __name__ == "__main__":
-    product1 = input("Enter Product 1 name: ")
-    price1 = float(input("Enter Product 1 price: ₹"))
-
-    product2 = input("Enter Product 2 name: ")
-    price2 = float(input("Enter Product 2 price: ₹"))
-
-    detect_unfair_price(product1, product2, price1, price2)
+    app.run(host="0.0.0.0", port=5000)

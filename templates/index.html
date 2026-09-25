@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pink Tag System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #fff5f8;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #ff4f91, #ff78a9);
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        header h1 {
+            font-size: 38px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #e83e78;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .product-box {
+            background: #fff7fa;
+            border: 1px solid #ffd1df;
+            border-radius: 15px;
+            padding: 22px;
+        }
+
+        .product-box h3 {
+            color: #e83e78;
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 18px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #ff4f91;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            margin-top: 25px;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: #ff4f91;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #e83e78;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            background: #fff0f5;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .result h2 {
+            margin-bottom: 15px;
+        }
+
+        .comparison {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .comparison div {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            flex: 1;
+        }
+
+        .number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e83e78;
+        }
+
+        .warning {
+            color: #d62828;
+            font-size: 19px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .safe {
+            color: #218739;
+            font-size: 19px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        @media (max-width: 700px) {
+            .products {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison {
+                flex-direction: column;
+            }
+
+            header h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>💗 Pink Tag System</h1>
+    <p>Detect and analyse potential gender-based price differences</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>Compare Product Prices</h2>
+
+        <form method="POST">
+
+            <div class="products">
+
+                <div class="product-box">
+                    <h3>🛍️ Product 1</h3>
+
+                    <label>Product Name</label>
+                    <input
+                        type="text"
+                        name="product1"
+                        placeholder="Example: Men's Razor"
+                        required
+                    >
+
+                    <label>Price (₹)</label>
+                    <input
+                        type="number"
+                        name="price1"
+                        placeholder="100"
+                        min="1"
+                        step="0.01"
+                        required
+                    >
+                </div>
+
+                <div class="product-box">
+                    <h3>🛍️ Product 2</h3>
+
+                    <label>Product Name</label>
+                    <input
+                        type="text"
+                        name="product2"
+                        placeholder="Example: Women's Razor"
+                        required
+                    >
+
+                    <label>Price (₹)</label>
+                    <input
+                        type="number"
+                        name="price2"
+                        placeholder="130"
+                        min="1"
+                        step="0.01"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <button type="submit">
+                Compare Prices
+            </button>
+
+        </form>
+
+        {% if result %}
+
+        <div class="result">
+
+            <h2>📊 Comparison Result</h2>
+
+            <div class="comparison">
+
+                <div>
+                    <p>{{ result.product1 }}</p>
+                    <p class="number">₹{{ "%.2f"|format(result.price1) }}</p>
+                </div>
+
+                <div>
+                    <p>{{ result.product2 }}</p>
+                    <p class="number">₹{{ "%.2f"|format(result.price2) }}</p>
+                </div>
+
+            </div>
+
+            <p>
+                Price Difference:
+                <strong>₹{{ "%.2f"|format(result.difference) }}</strong>
+            </p>
+
+            <p>
+                Percentage Difference:
+                <strong>{{ "%.2f"|format(result.percentage) }}%</strong>
+            </p>
+
+            {% if result.percentage > 10 %}
+                <p class="warning">
+                    ⚠️ Potential Unfair Pricing Detected!
+                </p>
+            {% else %}
+                <p class="safe">
+                    ✅ No Significant Unfair Pricing Detected.
+                </p>
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<footer>
+    Pink Tag System • Price Fairness Analysis
+</footer>
+
+</body>
+</html>
