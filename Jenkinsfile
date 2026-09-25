@@ -33,8 +33,8 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker --version'
-                sh 'docker build -t pink-tag-system .'
+                sh '/usr/local/bin/docker --version'
+                sh '/usr/local/bin/docker build -t pink-tax-system .'
             }
         }
 
