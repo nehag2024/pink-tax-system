@@ -39,7 +39,7 @@ pipeline {
                     export DOCKER_CONFIG="$WORKSPACE/.docker"
 
                     /usr/local/bin/docker --version
-                    /usr/local/bin/docker build -t pink-tax-system .
+                    /usr/local/bin/docker --context desktop-linux build -t pink-tax-system .
                 '''
             }
         }
