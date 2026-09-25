@@ -37,9 +37,10 @@ pipeline {
                     mkdir -p "$WORKSPACE/.docker"
                     printf '%s\n' '{\"auths\":{}}' > "$WORKSPACE/.docker/config.json"
                     export DOCKER_CONFIG="$WORKSPACE/.docker"
+                    export DOCKER_HOST="unix:///Users/nehagokul/.docker/run/docker.sock"
 
                     /usr/local/bin/docker --version
-                    /usr/local/bin/docker --context desktop-linux build -t pink-tax-system .
+                    /usr/local/bin/docker build -t pink-tax-system .
                 '''
             }
         }
