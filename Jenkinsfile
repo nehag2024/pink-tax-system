@@ -2,6 +2,10 @@ pipeline {
 
     agent any
 
+    tools {
+        maven 'M3'
+    }
+
     stages {
 
         stage('Checkout') {
@@ -20,23 +24,18 @@ pipeline {
         stage('Maven Build and Test') {
             steps {
                 dir('maven-app') {
+                    sh 'mvn --version'
                     sh 'mvn clean test'
                 }
             }
         }
 
-        stage('Check Docker') {
-            steps {
-                sh '/usr/local/bin/docker --version'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
-                sh '/usr/local/bin/docker build -t pink-tag-system .'
+                sh 'docker --version'
+                sh 'docker build -t pink-tag-system .'
             }
         }
 
     }
-
 }
